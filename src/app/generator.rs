@@ -12,6 +12,7 @@ use miette::{IntoDiagnostic, Result};
 use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
+use version_resolver::minecraft::{JavaVersion, MinecraftVersion};
 use version_resolver::maven::{resolve_latest_version, resolve_matching_version, MavenLibrary};
 
 pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::filer::FilerProvider) -> Result<()> {
@@ -56,6 +57,10 @@ pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::fi
     if let Some((data_pack_format_key, data_pack_format)) = game_version.forge_server_pack_version() {
         context.put("FORGE_DATA_PACK_FORMAT_KEY", data_pack_format_key);
         context.put("FORGE_DATA_PACK_FORMAT", data_pack_format);
+    }
+
+    if game_version >= MinecraftVersion::Minecraft1_20_6 {
+        context.define("forge_jopt_hack");
     }
 
     // Constants
@@ -120,6 +125,11 @@ pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::fi
                     )));
                 }
                 platforms.push("forge");
+
+                // As of 1.21, Forge uses Mixin 0.8.5 which doesn't have CompatibilityLevel.JAVA_21.
+                if game_version.java_version() == JavaVersion::Java9OrNewer(21) {
+                    context.put("MIXIN_COMPAT_LEVEL", JavaVersion::Java9OrNewer(17).mixin_compat_level());
+                }
             }
 
             if app.subprojects.neoforge {
@@ -131,7 +141,7 @@ pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::fi
                         std::future::ready(Ok(version)),
                     )));
                 }
-                if game_version == version_resolver::minecraft::MinecraftVersion::Minecraft1_20_4 {
+                if game_version == MinecraftVersion::Minecraft1_20_4 {
                     context.put("NEOFORGE_METADATA_FILE_NAME", "mods.toml");
                     files.push(Box::pin(neoforge::mods_toml_files(client.clone())));
                 } else {
@@ -177,7 +187,7 @@ pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::fi
                     std::future::ready(Ok(version)),
                 )));
             }
-            if game_version == version_resolver::minecraft::MinecraftVersion::Minecraft1_20_4 {
+            if game_version == MinecraftVersion::Minecraft1_20_4 {
                 context.put("NEOFORGE_METADATA_FILE_NAME", "mods.toml");
                 files.push(Box::pin(neoforge_only::mods_toml_files(client.clone())));
             } else {
@@ -193,6 +203,12 @@ pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::fi
                     "FORGE_VERSION",
                     std::future::ready(Ok(version)),
                 )));
+            }
+            file_name_parts.push("forge-only".to_owned());
+
+            // As of 1.21, Forge uses Mixin 0.8.5 which doesn't have CompatibilityLevel.JAVA_21.
+            if game_version.java_version() == JavaVersion::Java9OrNewer(21) {
+                context.put("MIXIN_COMPAT_LEVEL", JavaVersion::Java9OrNewer(17).mixin_compat_level());
             }
         }
     }
