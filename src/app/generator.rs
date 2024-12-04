@@ -204,7 +204,7 @@ pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::fi
                     std::future::ready(Ok(version)),
                 )));
             }
-            file_name_parts.push("forge-only".to_owned());
+            // file_name_parts.push("forge-only".to_owned());
 
             // As of 1.21, Forge uses Mixin 0.8.5 which doesn't have CompatibilityLevel.JAVA_21.
             if game_version.java_version() == JavaVersion::Java9OrNewer(21) {

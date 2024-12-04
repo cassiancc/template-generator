@@ -82,8 +82,8 @@ pub async fn generate(state: JsValue) {
 
 async fn generate_inner(state: JsValue) -> Result<(), JsValue> {
     let app: crate::app::GeneratorApp = serde_wasm_bindgen::from_value(state)?;
-    crate::app::generator::generate(&app)
-            .await
+    crate::app::generator::generate(&app, &filer::ZipFilerProvider(filer::web::ZipSaveDialog))
+        .await
         .map_err(|err| JsValue::from(format!("{}", err)))
 }
 
