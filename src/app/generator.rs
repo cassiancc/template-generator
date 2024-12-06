@@ -86,6 +86,15 @@ pub async fn generate(app: &super::GeneratorApp, filer_provider: &impl crate::fi
                 }),
             )));
         }
+        MappingSet::Parchment => {
+            context.define("parchment");
+            variables.push(Box::pin(add_key(
+                "PARCHMENT_MAPPINGS",
+                resolve_matching_version(&client, MavenLibrary::parchment(), |version| {
+                    version.starts_with(&format!("{}+", game_version.version()))
+                }),
+            )));
+        }
     }
 
     // Project-type specific
