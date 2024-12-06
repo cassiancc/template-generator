@@ -14,6 +14,7 @@ const ARCHITECTURY_MAVEN: &'static str = "https://maven.architectury.dev";
 const FORGE_MAVEN: &'static str = "https://maven.minecraftforge.net";
 const NEOFORGE_MAVEN: &'static str = "https://maven.neoforged.net/releases";
 const QUILT_MAVEN: &'static str = "https://maven.quiltmc.org/repository/release/";
+const PARCHMENT_MAVEN: &'static str = "https://maven.parchmentmc.org";
 
 pub struct MavenLibrary {
     repository: MavenRepository,
@@ -93,6 +94,11 @@ impl MavenLibrary {
     pub fn quilted_fabric_api() -> Self {
         Self::new(MavenRepository::Quilt, "org.quiltmc.quilted-fabric-api", "quilted-fabric-api")
     }
+
+    // Parchment libraries
+    pub fn parchment() -> Self {
+        Self::new(MavenRepository::Parchment, "org.parchmentmc.data", "parchment")
+    }
 }
 
 impl std::fmt::Display for MavenLibrary {
@@ -113,6 +119,7 @@ pub enum MavenRepository {
     Forge,
     NeoForge,
     Quilt,
+    Parchment,
 }
 
 impl MavenRepository {
@@ -123,6 +130,7 @@ impl MavenRepository {
             Self::Forge => FORGE_MAVEN,
             Self::NeoForge => NEOFORGE_MAVEN,
             Self::Quilt => QUILT_MAVEN,
+            Self::Parchment => PARCHMENT_MAVEN,
         }
     }
 }

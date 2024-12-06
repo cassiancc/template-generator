@@ -23,6 +23,7 @@ pub enum MappingSet {
     #[default]
     Mojang,
     Yarn,
+    Parchment
 }
 
 impl MappingSet {
@@ -30,6 +31,7 @@ impl MappingSet {
         match self {
             Self::Mojang => "Official Mojang mappings",
             Self::Yarn => "Yarn",
+            Self::Parchment => "Parchment",
         }
     }
 
@@ -37,6 +39,7 @@ impl MappingSet {
         match self {
             Self::Mojang => "The official obfuscation maps published by Mojang.",
             Self::Yarn => "A libre mapping set maintained by FabricMC.",
+            Self::Parchment => "A community-sourced mapping set, layered on top of Mojang's mappings.",
         }
     }
 }

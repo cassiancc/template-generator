@@ -36,6 +36,12 @@ dependencies {
 //% if mojang_mappings
     mappings loom.officialMojangMappings()
 //% end
+//% if parchment
+    mappings loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${project.minecraft_version}:@${project.parchment_version}@zip")
+    }
+//% end
     forge "net.minecraftforge:forge:$project.forge_version"
 }
 
