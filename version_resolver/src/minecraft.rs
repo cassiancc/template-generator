@@ -142,8 +142,7 @@ impl MinecraftVersion {
             Self::Minecraft1_21_1 => Some("52"),
             Self::Minecraft1_21_2 => None,
             Self::Minecraft1_21_3 => Some("53"),
-            Self::Minecraft1_21_4 => None,
-            
+            Self::Minecraft1_21_4 => Some("54"),
         }
     }
 
@@ -230,11 +229,10 @@ impl MinecraftVersion {
             Self::Minecraft1_20_5 => None,
             Self::Minecraft1_20_6 => Some("32"),
             Self::Minecraft1_21 => Some("34"),
-            Self::Minecraft1_21_1 => Some("34"),
-            Self::Minecraft1_21_2 => None,
-            Self::Minecraft1_21_3 => Some("42"),
-            Self::Minecraft1_21_4 => None,
-            
+            Self::Minecraft1_21_1 => Some("48"),
+            Self::Minecraft1_21_2 => Some("57"),
+            Self::Minecraft1_21_3 => Some("57"),
+            Self::Minecraft1_21_4 => Some("61"),
         }
     }
 
